@@ -1,0 +1,17 @@
+﻿@model Account.Web.Models.RequestResultModel
+@{string alertClass = string.Empty, alert=string.Empty;
+    if (Model.Successful) {
+        alertClass = "alert-success";
+        alert = "Success!";
+    }
+    else
+    {
+        alertClass = "alert-danger";
+        alert = "Oops!";
+    }
+}
+
+<div class="alert @alertClass alert-dismissible" role="alert" id="divAlert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>@alert</strong> @Model.Message
+</div>

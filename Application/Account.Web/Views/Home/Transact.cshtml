@@ -1,0 +1,107 @@
+﻿@model Account.Web.Models.AccountViewModel
+@{
+    ViewBag.Title = "Transact";
+}
+
+<h2>Transaction</h2>
+@if (Model.Result != null)
+{
+    @Html.Partial("_Message", Model.Result)
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-3">
+            <label>Transaction Type:</label>
+        </div>
+        <div class="col-xs-1">
+            <div class="input-group">
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Select
+                        <span class="caret"></span>
+                    </button>
+                    @if (Model.TransactionTypes != null)
+                    {
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            @foreach (var transactionType in Model.TransactionTypes)
+                {
+                                <li><a href="#">@transactionType</a></li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+            
+        </div>
+        <div class="col-xs-1"><span id="spnSelectedTransacion"></span></div>
+        </div>
+    <!--</div> Add more-->
+    <div class="row">
+        <div class="col-xs-3">
+            <label>Account details:</label>
+        </div>
+        <div class="col-xs-3">
+                <div class="form-group">
+                    <form id="frmAccountDetails" action="/Home/Transact" method="post">
+                        <input type="text" class="form-control" id="AccountNumber" name="AccountNumber" placeholder="Account Number" />
+
+                        <input type="text" class="form-control" id="TransactionAmount" name="TransactionAmount" placeholder="Amount" style="display: none;" />
+                        <input type="text" class="form-control" id="Currency" name="Currency" placeholder="Currency" style="display: none;" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Go</button>
+                        </span>
+                        <input type="hidden" id="TransactionType" name="TransactionType" />
+                    </form>
+                </div><!-- /input-group -->
+        </div>
+    </div>
+@if (Model.Result != null && Model.Result.Successful)
+{
+    <div class="row">
+        <div class="col-xs-3">
+            
+                    <label>Account Number:</label>
+            
+    </div>
+        <div class="col-xs-3">
+            @Model.AccountNumber
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-3">
+
+                    <label>Account Balance:</label>
+
+            </div>
+            <div class="col-xs-3">
+                @Model.Result.Balance
+
+            </div>
+
+        </div>
+}
+    </div>
+            @section scripts{
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $(".dropdown-menu li a").on("click", function () {
+                            $("#TransactionType").val($(this).text());
+                            $("#spnSelectedTransacion").text($(this).text());
+                            console.log($("#TransactionType").val());
+                            if ($(this).text() != "Balance") {
+                                $("#TransactionAmount").show();
+                                $("#Currency").show();
+                            }
+                            else {
+                                $("#TransactionAmount").hide();
+                                $("#Currency").hide();
+                            }
+                        });
+                    });
+                </script>
+
+
+            }
